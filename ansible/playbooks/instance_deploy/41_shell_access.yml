@@ -2,21 +2,23 @@
 - name: this is the play for adding an ssh key to a gateone user
   hosts: atmosphere
   vars:
-    KEY_LOC_PATH: "/var/lib/gateone/users/{{ ATMOUSERNAME }}/.ssh"
-    KEY_LOC_OWNER: root
-    KEY_LOC_GROUP: root
-    KEY_LOC_PREFIX: ""
-    target_host: "shell"
+    EXTERNAL_HOST_KEY_DIR: "/var/lib/gateone/users/{{ ATMOUSERNAME }}/.ssh"
+    EXTERNAL_HOST_KEY_OWNER: root
+    EXTERNAL_HOST_KEY_GROUP: root
+    EXTERNAL_HOST_KEY_NAME: ""
+    EXTERNAL_HOST: "shell"
+    USERNAME: "{{ ATMOUSERNAME }}"
   roles:
     - sshkey-host-access
 
 - name: this is the play for adding an ssh key to a guacamole user
   hosts: atmosphere
   vars:
-    KEY_LOC_PATH: "/etc/guacamole/keys/{{ ATMOUSERNAME }}"
-    KEY_LOC_OWNER: tomcat7
-    KEY_LOC_GROUP: tomcat7
-    KEY_LOC_PREFIX: "_guac"
-    target_host: "guac_server"
+    EXTERNAL_HOST_KEY_DIR: "/etc/guacamole/keys/{{ ATMOUSERNAME }}"
+    EXTERNAL_HOST_KEY_OWNER: tomcat7
+    EXTERNAL_HOST_KEY_GROUP: tomcat7
+    EXTERNAL_HOST_KEY_NAME: "_guac"
+    EXTERNAL_HOST: "guac_server"
+    USERNAME: "{{ ATMOUSERNAME }}"
   roles:
     - { role: "sshkey-host-access", when: "SETUP_GUACAMOLE is true" }
