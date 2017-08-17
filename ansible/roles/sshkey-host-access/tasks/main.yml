@@ -33,15 +33,6 @@
         owner: "{{ EXTERNAL_HOST_KEY_OWNER }}"
         group: "{{ EXTERNAL_HOST_KEY_GROUP }}"
 
-    - name: add the key name to .default_ids
-      lineinfile:
-        dest: "{{ EXTERNAL_HOST_KEY_DIR }}/.default_ids"
-        line: "{{ EXTERNAL_HOST_KEY_NAME }}"
-        create: yes
-        state: present
-        owner: "{{ EXTERNAL_HOST_KEY_OWNER }}"
-        group: "{{ EXTERNAL_HOST_KEY_GROUP }}"
-
     - name: transfer the public key from {{ EXTERNAL_HOST }} host to controller
       fetch:
         src: "{{ FULL_PUBKEY_PATH }}"

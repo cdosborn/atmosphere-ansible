@@ -22,8 +22,6 @@ Example Playbook
 
 See `ansible/playbooks/instance_deploy/41_shell_access.yml`
 
-Assumption: keys generated will automatically be added as a default key
-
 Author Information
 ------------------
 
