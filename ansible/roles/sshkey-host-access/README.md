@@ -10,15 +10,15 @@ keypair will be created.
 Role Variables
 --------------
 
-| Variable                      | Required   | Default    | Choices                       | Comments                                   |
-|-------------------------------|------------|------------|-------------------------------|--------------------------------------------|
-| USERNAME                      | yes        |            |                               | Username that EXTERNAL_HOST can ssh as     |
-| EXTERNAL_HOST                 | yes        |            |                               | Ansible host that is granted ssh privilege |
-| EXTERNAL_HOST_PUBLIC_KEY_PATH | no         |            | <path to existing public key> | Path to existing public key for access     |
-| EXTERNAL_HOST_KEY_OWNER       | no         | root       |                               | Owner of generated key pair                |
-| EXTERNAL_HOST_KEY_GROUP       | no         | root       |                               | Group of generated key pair                |
-| EXTERNAL_HOST_KEY_DIR         | no         | /root/.ssh |                               | Location of generated key pair             |
-| EXTERNAL_HOST_KEY_NAME        | no         | id_rsa     |                               | Name of generated key pair                 |
+| Variable                        | Required     | Default                    | Choices                         | Comments                                     |
+|---------------------------------|--------------|----------------------------|---------------------------------|----------------------------------------------|
+| USERNAME                        | yes          |                            |                                 | Username that EXTERNAL_HOST can ssh as       |
+| EXTERNAL_HOST                   | yes          |                            |                                 | Ansible host that is granted ssh privilege   |
+| EXTERNAL_HOST_PUBLIC_KEY_PATH   | no           |                            | <path to existing public key>   | Path to existing public key for access       |
+| EXTERNAL_HOST_KEY_OWNER         | no           | root                       |                                 | Owner of generated key pair                  |
+| EXTERNAL_HOST_KEY_GROUP         | no           | root                       |                                 | Group of generated key pair                  |
+| EXTERNAL_HOST_KEY_DIR           | no           | /root/.ssh                 |                                 | Location of generated key pair               |
+| EXTERNAL_HOST_KEY_NAME          | no           | id_rsa_{{ EXTERNAL_HOST }} |                                 | Name of generated key                        |
 
 Example Playbook
 ----------------

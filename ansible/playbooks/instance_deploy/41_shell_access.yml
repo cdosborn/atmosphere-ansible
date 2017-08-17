@@ -5,7 +5,6 @@
     EXTERNAL_HOST_KEY_DIR: "/var/lib/gateone/users/{{ ATMOUSERNAME }}/.ssh"
     EXTERNAL_HOST_KEY_OWNER: root
     EXTERNAL_HOST_KEY_GROUP: root
-    EXTERNAL_HOST_KEY_NAME: ""
     EXTERNAL_HOST: "shell"
     USERNAME: "{{ ATMOUSERNAME }}"
   roles:

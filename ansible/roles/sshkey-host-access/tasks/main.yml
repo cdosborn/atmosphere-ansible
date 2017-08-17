@@ -17,7 +17,7 @@
 
     - name: generate the keypair
       command: >
-        /usr/bin/ssh-keygen -N '' -t rsa -b 2048 -f {{ EXTERNAL_HOST_KEY_DIR }}/{{ USERNAME }}{{ EXTERNAL_HOST_KEY_NAME }}_default -C {{ USERNAME }}
+        /usr/bin/ssh-keygen -N '' -t rsa -b 2048 -f {{ EXTERNAL_HOST_KEY_DIR }}/{{ EXTERNAL_HOST_KEY_NAME }} -C {{ USERNAME }}
       when: existing_key.stat.exists == False
 
     - name: set the permissions on the private key file
@@ -36,7 +36,7 @@
     - name: add the key name to .default_ids
       lineinfile:
         dest: "{{ EXTERNAL_HOST_KEY_DIR }}/.default_ids"
-        line: "{{ USERNAME }}{{ EXTERNAL_HOST_KEY_NAME }}_default"
+        line: "{{ EXTERNAL_HOST_KEY_NAME }}"
         create: yes
         state: present
         owner: "{{ EXTERNAL_HOST_KEY_OWNER }}"
