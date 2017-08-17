@@ -1,5 +1,5 @@
 ---
-- name: this is the play for adding an ssh key to a gateone user
+- name: Enable ssh access from gateone shell host into user vm
   hosts: atmosphere
   vars:
     EXTERNAL_HOST_KEY_NAME: "id_rsa_gateone"
@@ -14,7 +14,7 @@
     # Gateone reads this file in the gatone user ssh directory, and uses each
     # identity found there when it tries to open an SSH connection from the
     # gateone server to the user's vm
-    - name: add the key name to .default_ids
+    - name: Add the key name to gateones .default_ids
       lineinfile:
         dest: "{{ EXTERNAL_HOST_KEY_DIR }}/.default_ids"
         line: "{{ EXTERNAL_HOST_KEY_NAME }}"
@@ -24,7 +24,7 @@
         group: "{{ EXTERNAL_HOST_KEY_GROUP }}"
       delegate_to: "{{ EXTERNAL_HOST }}"
 
-- name: this is the play for adding an ssh key to a guacamole user
+- name: Enable ssh access from guac_server host into user vm
   hosts: atmosphere
   vars:
     EXTERNAL_HOST_KEY_DIR: "/etc/guacamole/keys/{{ ATMOUSERNAME }}"
