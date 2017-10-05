@@ -6,49 +6,36 @@
   when: 'ansible_distribution == "CentOS" and ansible_distribution_major_version == "5"'
   tags: 'python'
 
-- name: 'conflicting users and groups removed from sudoers'
+- name: "Give {{ ATMOUSERNAME }} and 'users' group password based sudo"
   lineinfile:
     dest: '/etc/sudoers'
-    backup: 'yes'
-    regexp: '{{ item.value.reg }}'
-    line: '{{ item.value.line }}'
-    state: 'absent'
-  with_dict: '{{ SUDOERS_USERS_AND_GROUPS.TO_REMOVE }}'
-  tags: 'sudoers'
+    line: '{{ item.line }}'
+    regexp: '{{ item.regex }}'
+  with_items:
+    - { line: '%users ALL=(ALL) ALL', regex: "^%users.*\\sALL$" }
+    - { line: '{{ ATMOUSERNAME }} ALL=(ALL) ALL' , regex: "^{{ ATMOUSERNAME }}.*\\sALL$" }
 
-- name: 'all instances of atmosphere username removed from sudoers'
+- name: Only allow passwordless sudo when LDAP is not available
   lineinfile:
     dest: '/etc/sudoers'
-    state: 'absent'
-    regexp: '^{{ ATMOUSERNAME }}'
-  failed_when: false
+    line: '{{ item.line }}'
+    regexp: '{{ item.regex }}'
+    state: '{{ "absent" if SETUP_LDAP is defined and SETUP_LDAP else "present" }}'
+  with_items:
+      - { line: '%users ALL=(ALL) NOPASSWD:ALL', regex: "%users.*NOPASSWD" }
+      - { line: '{{ ATMOUSERNAME }} ALL=(ALL) NOPASSWD:ALL' , regex: "{{ ATMOUSERNAME }}.*NOPASSWD" }
 
-- name: 'users and groups added to sudoers'
+- name: Add sudoers priveleges for additional sudoers groups
   lineinfile:
     dest: '/etc/sudoers'
-    backup: true
-    regexp: '{{ item.value.reg }}'
-    line: '{{ item.value.line }}'
-    state: 'present'
-  with_dict: "{{ SUDOERS_USERS_AND_GROUPS.TO_ADD }}"
-  tags: 'sudoers'
+    line: "%{{ item }} ALL=(ALL) ALL"
+  with_items: "{{ EXTRA_SUDOER_GROUPS }}"
 
 - name: '/etc/skel/.bashrc populated'
   lineinfile:
     dest: '/etc/skel/.bashrc'
     line: '{{ item }}'
   with_items: '{{ SETUP_USER_BASHRC_LINES }}'
-
-- name: 'atmousername and %users added to sudoers'
-  lineinfile:
-    dest: '/etc/sudoers'
-    backup: 'yes'
-    line: '{{ item }}'
-  with_items:
-    - '%users ALL=(ALL) NOPASSWD: ALL'
-    - '{{ ATMOUSERNAME }} ALL=(ALL) NOPASSWD:ALL'
-  # We want password-required sudo when we have an LDAP password to authenticate with
-  when: 'SETUP_LDAP is not defined or SETUP_LDAP != true'
 
 - name: see if user is already located in /etc/group
   command: grep "{{ ADD_TO_GROUP.GROUP }}:x:100:.*{{ ATMOUSERNAME }}.*" /etc/group
